@@ -14,7 +14,7 @@ using namespace std;
 
 Restaurant::Restaurant(string name) : name(name) {}
 Restaurant::~Restaurant() {
-    for (auto order : orders){
+    for (Order* order: orders){
         delete order;
     }
 }
