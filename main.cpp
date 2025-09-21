@@ -55,12 +55,22 @@ int main(){
     // Calculate and display financials
     cout << "Total Expenses: $" << myRestaurant.calculateTotalExpenses() << endl;
     cout << "Total Revenue: $" << myRestaurant.calculateTotalRevenue() << endl;
-    cout << "Total Profit: $" << myRestaurant.calculateProfit() << endl;    
-
-
-    //delete dynamically allocated orders
-    delete order1;
-    delete order2;
+       
+    
+    // Display profit status
+    if(myRestaurant.calculateProfit() > 0){
+        cout << "Profit: $" << myRestaurant.calculateProfit() << " (Profitable)" << endl;
+    } else if (myRestaurant.calculateProfit() == 0){
+        cout << "Break Even: $" << myRestaurant.calculateProfit() << " (No Profit, No Loss)" << endl;
+    } else {
+        cout << "Loss: $" << myRestaurant.calculateProfit() << " (Not Profitable)" << endl;
+    }   
+    
+    // Print receipts
+    cout << endl << "Receipts:" << endl;
+    order1->printReceipt();
+    cout << endl;
+    order2->printReceipt(); 
     
 
     return 0; 
