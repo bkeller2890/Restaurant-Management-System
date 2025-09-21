@@ -71,6 +71,7 @@ int main(){
     order1->printReceipt();
     cout << endl;
     order2->printReceipt(); 
+    cout << endl; 
     
 
     return 0; 
