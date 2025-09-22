@@ -2,7 +2,7 @@ Restaurant Management System
 Project Description: 
 This is a simple C++ console application designed to simulate the core financial and operational management of a restaurant. It provides a structured way to handle different business aspects, including employee data, expenses, menu items, and various types of customer orders. The system calculates and reports on key financial metrics like total revenue and profit.
 
-Key Features
+Key Features: 
 Employee Management: Store and retrieve employee information, including name, position, ID, and wage.
 
 Expense Tracking: Log and calculate total expenses for different operational costs.
@@ -34,7 +34,7 @@ Order.h / Order.cpp: An abstract base class for all order types. It provides com
 
 Restaurant.h / Restaurant.cpp: The main aggregation class that holds and manages all other objects (employees, expenses, orders) and orchestrates the financial calculations.
 
-How to Compile and Run
+How to Compile and Run: 
 To compile and run this program, you will need a C++ compiler (like g++).
 
 Compile the source files:
@@ -47,7 +47,7 @@ Run the executable:
 
 ./main
 
-Future Improvements
+Future Improvements: 
 This project can be expanded with more advanced features, such as:
 
 Adding a more sophisticated menu-driven user interface.
@@ -57,3 +57,4 @@ Implementing a persistent data storage solution (e.g., using files) to save and 
 Including more complex financial reports, such as monthly or quarterly summaries.
 
 Expanding employee management to include shifts, payroll, and performance tracking.
+
