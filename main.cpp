@@ -1,8 +1,9 @@
-#include "Employee.h"
-#include "Expense.h"
-#include "MenuItem.h"
-#include "Order.h"
-#include "Restaurant.h"
+#include "Employee.h" // Employee Class Definition
+#include "Expense.h" // Expense Class Definition
+#include "MenuItem.h" // MenuItem Class Definition
+#include "Order.h" // Order Class Definition
+#include "Restaurant.h"// Restaurant Class Definition
+
 
 #include <iostream>
 #include <string>
