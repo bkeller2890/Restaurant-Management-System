@@ -1,5 +1,5 @@
 Restaurant Management System
-Project Description
+Project Description: 
 This is a simple C++ console application designed to simulate the core financial and operational management of a restaurant. It provides a structured way to handle different business aspects, including employee data, expenses, menu items, and various types of customer orders. The system calculates and reports on key financial metrics like total revenue and profit.
 
 Key Features
