@@ -11,7 +11,7 @@ class Expense {
         double amount;
         string date; // Format: YYYY-MM-DD
     public: 
-        Expense(string type, double ount, string date) {}
+        Expense(string type, double amount, string date); 
         
         string getType() const;  
         double getAmount() const; 

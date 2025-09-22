@@ -39,8 +39,10 @@ int main(){
     MenuItem item3("Soda", "Unlimited Refill Soda", 1.99, 0.50);
     // Create and add orders - More orders can be added similarly
     // 
+
+    // NOTE : Distinguish between order types (Dine-In, Drive-Thru, Take-Out, Delivery)
     DineInOrder* order1 = new DineInOrder(101, 5);
-    DineInOrder* order2 = new DineInOrder(97, 10);
+   // DineInOrder* order2 = new DineInOrder(97, 10);
     
     //TODO: Implement item quantities in orders, also consider implementing combo meals
     order1->addItem(item1);
