@@ -5,22 +5,6 @@
 
 using namespace std;
 
-/*
-
-MenuItem class: 
-    - name 
-    - description 
-    - price 
-    - cost 
-
-    + getCost() : double
-    + setPrice(newPrice) : void
-    + getProfitMargin() : double 
-
-
-
-*/
-
 //TODO: Implement methods to handle item categories
 //TODO: Implement methods to handle item availability
 //TODO: Implement methods to handle item customization options

@@ -58,3 +58,55 @@ Including more complex financial reports, such as monthly or quarterly summaries
 
 Expanding employee management to include shifts, payroll, and performance tracking.
 
+Quick build & test (recommended):
+
+Build with warnings and C++17:
+
+```bash
+g++ -std=c++17 -Wall -Wextra *.cpp -o restaurant_app
+```
+
+Run the app:
+
+```bash
+./restaurant_app
+```
+
+Run the simple smoke test (prints a receipt):
+
+```bash
+g++ -std=c++17 -Wall -Wextra tests/time_tests.cpp *.cpp -o time_tests
+./time_tests
+```
+
+Sample receipt output (example):
+
+```
+Dine-In Order Receipt
+Order ID: 101
+Order Time: 2025-09-26 14:32:10 +02:00 (CEST) (2 minutes ago)
+Table Number: 5
+Items:
+- Burger x2: $10.99
+- Fries x1: $3.49
+- Soda x3: $1.99
+Total: $35.44
+Thank you for dining with us!
+```
+
+Optional: use Howard Hinnant's date/tz library for IANA timezone names
+
+1) Install the date library (on macOS with Homebrew):
+
+```bash
+brew install date
+```
+
+2) Build with the date library enabled (add -DUSE_DATE_LIB and include path if needed):
+
+```bash
+g++ -std=c++17 -Wall -Wextra -DUSE_DATE_LIB -I/usr/local/include *.cpp -o restaurant_app_date -ltz
+```
+
+When built with the date library, receipts will include robust IANA timezone names and correct offsets (including DST handling).
+

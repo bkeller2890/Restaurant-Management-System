@@ -17,7 +17,9 @@ class Order {
     protected:
         int orderID;
     vector<OrderItem> items;
-        string orderTime; // Could be a timestamp or formatted string
+    std::chrono::system_clock::time_point orderTime; // stored as a time_point, format on demand
+    std::string timezoneName; // local timezone name (if available)
+    int timezoneOffsetSeconds; // offset from UTC in seconds
         double totalAmount;
     public:
         Order(int id); 

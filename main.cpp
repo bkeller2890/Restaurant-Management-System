@@ -57,7 +57,7 @@ int main(){
     order2->calculateTotal();
     myRestaurant.addOrder(order2);
     // Calculate and display financials
-    cout << "Total Expenses: $" << myRestaurant.calculateTotalExpenses() << endl;
+    cout << "\nTotal Expenses: $" << myRestaurant.calculateTotalExpenses() << endl;
     cout << "Total Revenue: $" << myRestaurant.calculateTotalRevenue() << endl;
        
     
