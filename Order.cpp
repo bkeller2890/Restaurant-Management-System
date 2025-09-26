@@ -1,6 +1,9 @@
+
 #include "Order.h"
 #include <iostream>
 #include <iomanip>
+#include <utility> 
+#include <vector> 
 #include <string>
 
 using namespace std;    
@@ -21,13 +24,14 @@ Order::Order(int id) : orderID(id), totalAmount(0.0) {
 Order::~Order() {
     // Destructor logic if needed
 }
-void Order::addItem(const MenuItem& item) {
-    items.push_back(item);
+void Order::addItem(const MenuItem& item, int quantity) {
+    OrderItem newItem = {item, quantity};
+    items.push_back(newItem);
 }
 double Order::calculateTotal() {
     totalAmount = 0.0;
-    for (const auto& item : items) {
-        totalAmount += item.getPrice();
+    for (const auto& entry : items) {
+        totalAmount += entry.item.getPrice() * entry.quantity;
     }
     return totalAmount;
 }
@@ -42,7 +46,7 @@ void DineInOrder::printReceipt() const {
     cout << "Table Number: " << tableNumber << endl;
     cout << "Items:" << endl;
     for (const auto& item : items) {
-        cout << "- " << item.getName() << ": $" << fixed << setprecision(2) << item.getPrice() << endl;
+    cout << "- " << item.item.getName() << " x" << item.quantity << ": $" << fixed << setprecision(2) << item.item.getPrice() << endl;
     }
     cout << "Total: $" << fixed << setprecision(2) << totalAmount << endl;
     cout << "Thank you for dining with us!" << endl;
@@ -53,7 +57,7 @@ void DriveThruOrder::printReceipt() const {
     cout << "Order ID: " << orderID << endl;
     cout << "Items:" << endl;
     for (const auto& item : items) {
-        cout << "- " << item.getName() << ": $" << fixed << setprecision(2) << item.getPrice() << endl;
+    cout << "- " << item.item.getName() << " x" << item.quantity << ": $" << fixed << setprecision(2) << item.item.getPrice() << endl;
     }
     cout << "Total: $" << fixed << setprecision(2) << totalAmount << endl;
     cout << "Thank you for your order!" << endl;
@@ -65,7 +69,7 @@ void TakeOutOrder::printReceipt() const {
     cout << "Order ID: " << orderID << endl;
     cout << "Items: " << endl;
     for (const auto& item : items) {
-        cout << "- " << item.getName() << ": $" << fixed << setprecision(2) << item.getPrice() << endl;
+    cout << "- " << item.item.getName() << " x" << item.quantity << ": $" << fixed << setprecision(2) << item.item.getPrice() << endl;
     }
     cout << "Total: $" << fixed << setprecision(2) << totalAmount << "\n";
     cout << "Thank you for your order!" << endl;
@@ -85,11 +89,11 @@ void DeliveryOrder::printReceipt() const {
     cout << "Platform: " << platformName << endl;
     cout << "Items:" << endl;
     for (const auto& item : items) {
-        cout << "- " << item.getName() << ": $" << fixed << setprecision(2) << item.getPrice() << endl;
+        cout << "- " << item.item.getName() << " x" << item.quantity << ": $" << fixed << setprecision(2) << item.item.getPrice() << endl;
     }
     double baseTotal = 0.0;
     for (const auto& item : items) {
-        baseTotal += item.getPrice();
+        baseTotal += item.item.getPrice() * item.quantity;
     }
     double commission = baseTotal * commissionRate;             
     cout << "Subtotal: $" << fixed << setprecision(2) << baseTotal << endl;

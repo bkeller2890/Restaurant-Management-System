@@ -3,20 +3,26 @@
 
 #include <string>
 #include <vector>
+#include <utility> 
 #include "MenuItem.h"
 
 using namespace std;
 
+struct OrderItem {
+    MenuItem item;
+    int quantity;
+}; 
+
 class Order {
     protected:
         int orderID;
-        vector<MenuItem> items;
+    vector<OrderItem> items;
         string orderTime; // Could be a timestamp or formatted string
         double totalAmount;
     public:
         Order(int id); 
         virtual ~Order();
-        void addItem(const MenuItem& item);
+    void addItem(const MenuItem& item, int quantity = 1);
         virtual double calculateTotal(); 
         virtual void printReceipt() const = 0;
 };
