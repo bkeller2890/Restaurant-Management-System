@@ -44,16 +44,16 @@ int main(){
     DineInOrder* order1 = new DineInOrder(101, 5);
    // DineInOrder* order2 = new DineInOrder(97, 10);
     
-    //TODO: Implement item quantities in orders, also consider implementing combo meals
-    order1->addItem(item1);
-    order1->addItem(item2);
-    order1->addItem(item3);
+    // Implement item quantities in orders (quantity passed as second arg)
+    order1->addItem(item1, 2); // 2 Burgers
+    order1->addItem(item2, 1); // 1 Fries
+    order1->addItem(item3, 3); // 3 Sodas
     order1->calculateTotal();
     myRestaurant.addOrder(order1);          
 
     DriveThruOrder* order2 = new DriveThruOrder(102);
-    order2->addItem(item2);
-    order2->addItem(item3);
+    order2->addItem(item2, 2); // 2 Fries
+    order2->addItem(item3, 1); // 1 Soda
     order2->calculateTotal();
     myRestaurant.addOrder(order2);
     // Calculate and display financials
