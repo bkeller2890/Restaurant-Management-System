@@ -4,19 +4,6 @@
 
 using namespace std;
 
-/* 
-
-Expense class: 
-    - type 
-    - amount 
-    - date 
-
-    + getType() : string
-    + getAmount() : double
-    + getDate() : string
-    + OutputExpense() : string
-*/
-
 Expense::Expense(string type, double amount, string date){
     this->type = type; 
     this->amount = amount; 

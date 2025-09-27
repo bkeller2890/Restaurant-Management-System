@@ -2,20 +2,6 @@
 #include <string>
 using namespace std;
 
-/*
-
-Employee class: 
-    - name 
-    - position 
-    - id 
-    - wage 
-
-    + getName() : string
-    + getPosition() : string
-    + getId() : int
-    + getWage() : double
-*/
-
 //TODO: Implement methods to handle employee wages and salaries
 //TODO: Implement methods to handle employee roles and permissions
 //TODO: Implement methods to handle employee schedules and shifts
@@ -24,8 +10,6 @@ Employee class:
 //TODO: Implement methods to handle employee contact information
 //TODO: Implement methods to handle employee hiring and termination
 //TODO: Implement methods to handle employee training
-
-
 
 Employee::Employee(string name, string position, int id, double wage){
     this->name = name; 

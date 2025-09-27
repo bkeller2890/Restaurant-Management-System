@@ -65,6 +65,17 @@ namespace {
         if (diff < 86400) return to_string(diff/3600) + " hours ago";
         return to_string(diff/86400) + " days ago";
     }
+
+    // Simple formatter that returns local time as "YYYY-MM-DD HH:MM:SS"
+    string formatLocalTime(const system_clock::time_point& tp) {
+        time_t t = system_clock::to_time_t(tp);
+        tm buf{};
+        localtime_r(&t, &buf);
+        char b[128];
+    // 12-hour clock with AM/PM
+    strftime(b, sizeof(b), "%Y-%m-%d %I:%M:%S %p", &buf);
+        return string(b);
+    }
 }
 
 
@@ -121,9 +132,8 @@ DineInOrder::DineInOrder(int id, int tableNum) : Order(id), tableNumber(tableNum
 void DineInOrder::printReceipt() const {
     cout << "Dine-In Order Receipt" << endl;
     cout << "Order ID: " << orderID << endl;
-    // Format and print order time
-    cout << "Order Time: " << formatTimePoint(orderTime, timezoneOffsetSeconds, timezoneName)
-         << " (" << relativeTimeString(orderTime) << ")" << endl;
+    // Print only local date-time
+    cout << "Order Time: " << formatLocalTime(orderTime) << endl;
     cout << "Table Number: " << tableNumber << endl;
     cout << "Items:" << endl;
     for (const auto& item : items) {
@@ -138,8 +148,7 @@ void DriveThruOrder::printReceipt() const {
     cout << "Order ID: " << orderID << endl;
     // print time
     // reuse the same formatting lambdas as above
-    cout << "Order Time: " << formatTimePoint(orderTime, timezoneOffsetSeconds, timezoneName)
-         << " (" << relativeTimeString(orderTime) << ")" << endl;
+    cout << "Order Time: " << formatLocalTime(orderTime) << endl;
     cout << "Items:" << endl;
     for (const auto& item : items) {
     cout << "- " << item.item.getName() << " x" << item.quantity << ": $" << fixed << setprecision(2) << item.item.getPrice() << endl;
@@ -152,8 +161,7 @@ TakeOutOrder::TakeOutOrder(int id) : Order(id) {
 void TakeOutOrder::printReceipt() const {
     cout << "Take-Out Order Receipt" << endl;
     cout << "Order ID: " << orderID << endl;
-    cout << "Order Time: " << formatTimePoint(orderTime, timezoneOffsetSeconds, timezoneName)
-         << " (" << relativeTimeString(orderTime) << ")" << endl;
+    cout << "Order Time: " << formatLocalTime(orderTime) << endl;
     cout << "Items: " << endl;
     for (const auto& item : items) {
     cout << "- " << item.item.getName() << " x" << item.quantity << ": $" << fixed << setprecision(2) << item.item.getPrice() << endl;
@@ -173,8 +181,7 @@ double DeliveryOrder::calculateTotal() {
 void DeliveryOrder::printReceipt() const {
     cout << "Delivery Order Receipt" << endl; 
     cout << "Order ID: " << orderID << endl;
-    cout << "Order Time: " << formatTimePoint(orderTime, timezoneOffsetSeconds, timezoneName)
-         << " (" << relativeTimeString(orderTime) << ")" << endl;
+    cout << "Order Time: " << formatLocalTime(orderTime) << endl;
     cout << "Platform: " << platformName << endl;
     cout << "Items:" << endl;
     for (const auto& item : items) {
