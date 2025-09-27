@@ -1,5 +1,5 @@
-
 #include "Order.h"
+#include "DateTimeFormatter.h"
 #include <iostream>
 #include <iomanip>
 #include <utility> 
@@ -16,66 +16,7 @@ using namespace std;
 
 namespace {
     using namespace std::chrono;
-
-    // If Howard Hinnant's date library is available (define USE_DATE_LIB), use it for
-    // robust timezone/IANA formatting. Otherwise, fall back to a simple formatter.
-#ifdef USE_DATE_LIB
-#include "date/tz.h"
-    string formatTimePoint(const system_clock::time_point& tp, int /*offsetSeconds*/, const string& /*tzName*/) {
-        try {
-            // Use the system's current timezone and format with offset and name
-            auto z = date::current_zone();
-            if (z) {
-                return date::format("%Y-%m-%d %H:%M:%S %z (%Z)", date::make_zoned(z, tp));
-            }
-        } catch (...) {
-            // fallthrough to fallback
-        }
-        // fallback to basic formatting below
-        time_t t = system_clock::to_time_t(tp);
-        tm buf{};
-        localtime_r(&t, &buf);
-        char b[128];
-        strftime(b, sizeof(b), "%Y-%m-%d %H:%M:%S", &buf);
-        return string(b);
-    }
-#else
-    // Format a time_point into "YYYY-MM-DD HH:MM:SS ±HH:MM (TZ)"
-    string formatTimePoint(const system_clock::time_point& tp, int offsetSeconds, const string& tzName) {
-        time_t t = system_clock::to_time_t(tp);
-        tm buf{};
-        localtime_r(&t, &buf);
-        char b[128];
-        strftime(b, sizeof(b), "%Y-%m-%d %H:%M:%S", &buf);
-        int offs = offsetSeconds;
-        int mm = (abs(offs) % 3600) / 60;
-        char tz[16];
-        snprintf(tz, sizeof(tz), "%+03d:%02d", offs/3600, mm);
-        return string(b) + " " + tz + " (" + tzName + ")";
-    }
-#endif
-
-    // Produce a short relative time string, e.g., "5 minutes ago"
-    string relativeTimeString(const system_clock::time_point& tp) {
-        using namespace std::chrono;
-        auto now = system_clock::now();
-        auto diff = duration_cast<seconds>(now - tp).count();
-        if (diff < 60) return to_string(diff) + " seconds ago";
-        if (diff < 3600) return to_string(diff/60) + " minutes ago";
-        if (diff < 86400) return to_string(diff/3600) + " hours ago";
-        return to_string(diff/86400) + " days ago";
-    }
-
-    // Simple formatter that returns local time as "YYYY-MM-DD HH:MM:SS"
-    string formatLocalTime(const system_clock::time_point& tp) {
-        time_t t = system_clock::to_time_t(tp);
-        tm buf{};
-        localtime_r(&t, &buf);
-        char b[128];
-    // 12-hour clock with AM/PM
-    strftime(b, sizeof(b), "%Y-%m-%d %I:%M:%S %p", &buf);
-        return string(b);
-    }
+    // Reuse DateTimeFormatter functions for formatting
 }
 
 
@@ -89,6 +30,17 @@ Order::Order(int id) : orderID(id), totalAmount(0.0) {
     orderTime = chrono::system_clock::now();
     // determine timezone offset (local - UTC) in seconds
     time_t now_time = chrono::system_clock::to_time_t(orderTime);
+    
+    /*
+     ===============================================================================
+     NOTE: Order.cpp should ideally be using localtime_r/gmtime_r for thread safety
+     as it appears in the existing Order.cpp file.
+     The following assumes a POSIX-like environment where these are available.
+     If not, it falls back to the less safe std::localtime/std::gmtime which
+     the DateTimeFormatter::getLocalTm uses.
+     ===============================================================================
+    */
+    
     tm local_tm_storage{};
     tm gm_tm_storage{};
     tm* local_tm = localtime_r(&now_time, &local_tm_storage);
@@ -133,7 +85,7 @@ void DineInOrder::printReceipt() const {
     cout << "Dine-In Order Receipt" << endl;
     cout << "Order ID: " << orderID << endl;
     // Print only local date-time
-    cout << "Order Time: " << formatLocalTime(orderTime) << endl;
+    cout << "Order Time: " << DateTimeFormatter::formatLocalTime(orderTime) << endl;
     cout << "Table Number: " << tableNumber << endl;
     cout << "Items:" << endl;
     for (const auto& item : items) {
@@ -148,7 +100,7 @@ void DriveThruOrder::printReceipt() const {
     cout << "Order ID: " << orderID << endl;
     // print time
     // reuse the same formatting lambdas as above
-    cout << "Order Time: " << formatLocalTime(orderTime) << endl;
+    cout << "Order Time: " << DateTimeFormatter::formatLocalTime(orderTime) << endl;
     cout << "Items:" << endl;
     for (const auto& item : items) {
     cout << "- " << item.item.getName() << " x" << item.quantity << ": $" << fixed << setprecision(2) << item.item.getPrice() << endl;
@@ -161,7 +113,7 @@ TakeOutOrder::TakeOutOrder(int id) : Order(id) {
 void TakeOutOrder::printReceipt() const {
     cout << "Take-Out Order Receipt" << endl;
     cout << "Order ID: " << orderID << endl;
-    cout << "Order Time: " << formatLocalTime(orderTime) << endl;
+    cout << "Order Time: " << DateTimeFormatter::formatLocalTime(orderTime) << endl;
     cout << "Items: " << endl;
     for (const auto& item : items) {
     cout << "- " << item.item.getName() << " x" << item.quantity << ": $" << fixed << setprecision(2) << item.item.getPrice() << endl;
@@ -181,7 +133,7 @@ double DeliveryOrder::calculateTotal() {
 void DeliveryOrder::printReceipt() const {
     cout << "Delivery Order Receipt" << endl; 
     cout << "Order ID: " << orderID << endl;
-    cout << "Order Time: " << formatLocalTime(orderTime) << endl;
+    cout << "Order Time: " << DateTimeFormatter::formatLocalTime(orderTime) << endl;
     cout << "Platform: " << platformName << endl;
     cout << "Items:" << endl;
     for (const auto& item : items) {
